@@ -5,12 +5,6 @@ import com.pluralsight.NorthwindTradersAPI.models.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -24,12 +18,13 @@ public class ProductController {
 
     @RequestMapping(path = "/products", method = RequestMethod.GET)
     public List<Product> getAllProducts() {
-
-        return productDAO.getAllProducts();
+        List<Product> products = productDAO.getAllProducts();
+        return products;
     }
 
     @RequestMapping(path = "/products/{productID}", method = RequestMethod.GET)
     public List<Product> getProductByID(@PathVariable int productID) {
-        return productDAO.getProductByID(productID);
+        List<Product> products = productDAO.getProductByID(productID);
+        return products;
     }
 }
