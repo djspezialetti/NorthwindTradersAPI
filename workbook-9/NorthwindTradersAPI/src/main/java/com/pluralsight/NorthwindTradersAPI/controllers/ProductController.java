@@ -3,6 +3,7 @@ package com.pluralsight.NorthwindTradersAPI.controllers;
 import com.pluralsight.NorthwindTradersAPI.interfaces.ProductDAO;
 import com.pluralsight.NorthwindTradersAPI.models.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +26,13 @@ public class ProductController {
     @RequestMapping(path = "/products/{productID}", method = RequestMethod.GET)
     public List<Product> getProductByID(@PathVariable int productID) {
         List<Product> products = productDAO.getProductByID(productID);
+        return products;
+    }
+
+    @RequestMapping(path = "/products", method = RequestMethod.POST)
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public Product addProduct(@RequestBody Product product) {
+        Product products = productDAO.addProduct(product);
         return products;
     }
 }
