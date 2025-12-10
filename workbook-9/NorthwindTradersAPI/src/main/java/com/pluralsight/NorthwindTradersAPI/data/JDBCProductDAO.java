@@ -44,7 +44,7 @@ public class JDBCProductDAO implements ProductDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return this.products;
+        return products;
     }
 
     @Override
@@ -71,6 +71,6 @@ public class JDBCProductDAO implements ProductDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return this.products;
+        return products;
     }
 }
