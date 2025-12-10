@@ -59,7 +59,6 @@ public class ProductController {
                 statement.setInt(1, productID);
 
                 try (ResultSet rows = statement.executeQuery()) {
-
                     while (rows.next()) {
                         products.add(new Product(rows.getInt(1), rows.getString(2),
                                 rows.getString(3), rows.getDouble(4)));
