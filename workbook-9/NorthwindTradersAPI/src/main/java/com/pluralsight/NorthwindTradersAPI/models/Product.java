@@ -1,9 +1,20 @@
 package com.pluralsight.NorthwindTradersAPI.models;
 
+
+// TO-DO: Update category to be categoryID and put it as an int
 public class Product {
     private int productID;
     private String name, category;
     private double price;
+
+    public Product() {
+    }
+
+    public Product(String name, String category, double price) {
+        this.name = name;
+        this.category = category;
+        this.price = price;
+    }
 
     public Product(int productID, String name, String category, double price) {
         this.productID = productID;
