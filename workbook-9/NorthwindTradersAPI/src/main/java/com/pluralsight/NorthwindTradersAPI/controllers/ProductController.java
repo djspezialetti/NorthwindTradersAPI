@@ -2,10 +2,7 @@ package com.pluralsight.NorthwindTradersAPI.controllers;
 
 import com.pluralsight.NorthwindTradersAPI.models.Product;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -20,19 +17,19 @@ public class ProductController {
     private DataSource dataSource;
 
     @Autowired
-    public ProductController(DataSource dataSource){
+    public ProductController(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
-    @RequestMapping(path="/products", method = RequestMethod.GET)
-    public List<Product> getAllProducts(){
+    @RequestMapping(path = "/products", method = RequestMethod.GET)
+    public List<Product> getAllProducts() {
         List<Product> products = new ArrayList<>();
 
         String query = "SELECT P.ProductID, P.ProductName, C.CategoryName, P.UnitPrice " +
                 "FROM products AS P " +
                 "JOIN categories AS C ON (C.CategoryID = P.CategoryID) " +
                 "ORDER BY P.ProductID;";
-        try (Connection connection = dataSource.getConnection()){
+        try (Connection connection = dataSource.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet rows = statement.executeQuery();
 
@@ -47,28 +44,31 @@ public class ProductController {
         return products;
     }
 
-//    @RequestMapping(path="/", method = RequestMethod.GET)
-//    public List<Product> getProductByID(@RequestParam(required = false) int productID){
-//        List<Product> products = new ArrayList<>();
-//
-//        String query = "SELECT P.ProductID, P.ProductName, C.CategoryName, P.UnitPrice " +
-//                "FROM products AS P " +
-//                "JOIN categories AS C ON (C.CategoryID = P.CategoryID) " +
-//                "ORDER BY P.ProductID;";
-//        try (Connection connection = dataSource.getConnection()){
-//            PreparedStatement statement = connection.prepareStatement(query);
-//            ResultSet rows = statement.executeQuery();
-//
-//            while (rows.next()) {
-//                products.add(new Product(rows.getInt(1), rows.getString(2),
-//                        rows.getString(3), rows.getDouble(4)));
-//            }
-//
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//        return products;
-//    }
+    @RequestMapping(path = "/products/{productID}", method = RequestMethod.GET)
+    public List<Product> getProductByID(@PathVariable int productID) {
+        List<Product> products = new ArrayList<>();
 
+        String query = "SELECT P.ProductID, P.ProductName, C.CategoryName, P.UnitPrice " +
+                "FROM products AS P " +
+                "JOIN categories AS C ON (C.CategoryID = P.CategoryID) " +
+                "WHERE P.ProductID = ?;";
+        try {
+            Connection connection = dataSource.getConnection();
+
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setInt(1, productID);
+
+                try (ResultSet rows = statement.executeQuery()) {
+
+                    while (rows.next()) {
+                        products.add(new Product(rows.getInt(1), rows.getString(2),
+                                rows.getString(3), rows.getDouble(4)));
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return products;
+    }
 }
