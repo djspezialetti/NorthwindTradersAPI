@@ -14,7 +14,7 @@ public class HomeController {
     }
 
     @RequestMapping(path="/country", method = RequestMethod.GET)
-    public String index2(@RequestParam(defaultValue = "World") String country){
-        return "Hello " + country +"!";
+    public String getCountry(@RequestParam(defaultValue = "World") String country){
+        return "Hello " + country + "!";
     }
 }
