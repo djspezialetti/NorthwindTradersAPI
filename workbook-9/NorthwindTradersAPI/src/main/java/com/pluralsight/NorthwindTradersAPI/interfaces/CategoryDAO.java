@@ -5,6 +5,6 @@ import com.pluralsight.NorthwindTradersAPI.models.Category;
 import java.util.List;
 
 public interface CategoryDAO {
-    public void getProductByID(int id);
-    public List<Category> getAllProducts();
+    public List<Category> getCategoryByID(int id);
+    public List<Category> getAllCategories();
 }
